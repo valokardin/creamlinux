@@ -12,7 +12,7 @@ This should work for any linux native steam title that doesn't block LD_PRELOAD.
 ## Usage 
 1. Download the [latest](https://github.com/20PercentRendered/creamlinux/releases/latest/download/creamlinux.zip) release of Creamlinux.
 2. Unzip it and copy the files to the game's directory
-3. Set the game's steam launch params to `sh ./cream.sh %command%`.
+3. Set the game's steam launch params to `CREAM_SIMPLE=1 sh ./cream.sh %command%`.
 4. If you have your own cream_api.ini, copy the DLC lines to Creamlinux's cream_api.ini in the game directory. 
 5. Launch your game and have fun! 
 
@@ -38,6 +38,7 @@ If you want to load `cream_api.ini` from a specific path, specify the path with 
 
 If the game you want to test isn't supported, use `CREAM_GAME_NAME` to specify the game executable's name.
 
+`CREAM_SIMPLE` is used to skip the launcher popup. This variable may need to be removed for hoi4. 
 ## Credits
 [pulzed](https://github.com/pulzed) for [mINI](https://github.com/pulzed/mINI)(ini.h)
 
