@@ -1,4 +1,13 @@
 #!/bin/bash
+# this is going to be the default going forwards
+if [ "$CREAM_SIMPLE" ]; then 
+cp "$PWD/libCreamlinux.so" /tmp/libCreamlinux.so
+LD_PRELOAD="$LD_PRELOAD /tmp/libCreamlinux.so" "$@"
+EXITCODE=$?
+rm /tmp/libCreamlinux.so
+exit $EXITCODE
+fi
+
 result=$(zenity --title="Launch Options" --list "Start Game" "Edit Creamlinux settings" --column="Launch Options")
 # Supported games
 GAME_NAMES=("Hearts Of Iron IV" "Europa Universalis IV" "Cities: Skylines" "Stellaris" "PDX Launcher" "PAYDAY 2")
