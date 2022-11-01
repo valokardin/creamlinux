@@ -2,7 +2,7 @@
 CreamApi clone for Linux.
 
 ## Support
-This should work for any linux native steam title that doesn't block LD_PRELOAD. Not all games will however be visible in the popup. Read [Advanced](https://github.com/20PercentRendered/creamlinux#advanced) if this is the case.  
+This should work for any linux native steam title that doesn't block LD_PRELOAD, except unity games. 
 
 ## Tested games
  - Hearts Of Iron IV
