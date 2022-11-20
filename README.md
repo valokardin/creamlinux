@@ -2,7 +2,7 @@
 CreamApi clone for Linux.
 
 ## Support
-This should work for any linux native steam title that doesn't block LD_PRELOAD.
+This should work for any linux native steam title that isn't a unity game and doesn't block LD_PRELOAD.
 
 ## Tested games
  - Hearts Of Iron IV
