@@ -95,7 +95,7 @@ public:
 	virtual ISteamGameSearch *GetISteamGameSearch( HSteamUser hSteamuser, HSteamPipe hSteamPipe, const char *pchVersion ) = 0;
 
 	// Deprecated. Applications should use SteamAPI_RunCallbacks() or SteamGameServer_RunCallbacks() instead.
-	STEAM_PRIVATE_API( virtual void RunFrame() = 0; )
+	virtual void RunFrame() = 0;
 
 	// returns the number of IPC calls made since the last time this function was called
 	// Used for perf debugging so you can understand how many IPC calls your game makes per frame
@@ -116,7 +116,7 @@ public:
 	virtual ISteamHTTP *GetISteamHTTP( HSteamUser hSteamuser, HSteamPipe hSteamPipe, const char *pchVersion ) = 0;
 
 	// Deprecated - the ISteamUnifiedMessages interface is no longer intended for public consumption.
-	STEAM_PRIVATE_API( virtual void *DEPRECATED_GetISteamUnifiedMessages( HSteamUser hSteamuser, HSteamPipe hSteamPipe, const char *pchVersion ) = 0 ; )
+	virtual void *DEPRECATED_GetISteamUnifiedMessages( HSteamUser hSteamuser, HSteamPipe hSteamPipe, const char *pchVersion ) = 0 ;
 
 	// Exposes the ISteamController interface - deprecated in favor of Steam Input
 	virtual ISteamController *GetISteamController( HSteamUser hSteamUser, HSteamPipe hSteamPipe, const char *pchVersion ) = 0;
@@ -137,9 +137,9 @@ public:
 	virtual ISteamHTMLSurface *GetISteamHTMLSurface(HSteamUser hSteamuser, HSteamPipe hSteamPipe, const char *pchVersion) = 0;
 
 	// Helper functions for internal Steam usage
-	STEAM_PRIVATE_API( virtual void DEPRECATED_Set_SteamAPI_CPostAPIResultInProcess( void (*)() ) = 0; )
-	STEAM_PRIVATE_API( virtual void DEPRECATED_Remove_SteamAPI_CPostAPIResultInProcess( void (*)() ) = 0; )
-	STEAM_PRIVATE_API( virtual void Set_SteamAPI_CCheckCallbackRegisteredInProcess( SteamAPI_CheckCallbackRegistered_t func ) = 0; )
+	virtual void DEPRECATED_Set_SteamAPI_CPostAPIResultInProcess( void (*)() ) = 0;
+	virtual void DEPRECATED_Remove_SteamAPI_CPostAPIResultInProcess( void (*)() ) = 0;
+	virtual void Set_SteamAPI_CCheckCallbackRegisteredInProcess( SteamAPI_CheckCallbackRegistered_t func ) = 0;
 
 	// inventory
 	virtual ISteamInventory *GetISteamInventory( HSteamUser hSteamuser, HSteamPipe hSteamPipe, const char *pchVersion ) = 0;
@@ -159,7 +159,7 @@ public:
 	// Steam Remote Play interface
 	virtual ISteamRemotePlay *GetISteamRemotePlay( HSteamUser hSteamUser, HSteamPipe hSteamPipe, const char *pchVersion ) = 0;
 
-	STEAM_PRIVATE_API( virtual void DestroyAllInterfaces() = 0; )
+	virtual void DestroyAllInterfaces() = 0;
 
 };
 #define STEAMCLIENT_INTERFACE_VERSION		"SteamClient020"
@@ -167,12 +167,12 @@ public:
 #ifndef STEAM_API_EXPORTS
 
 // Global ISteamClient interface accessor
-inline ISteamClient *SteamClient();
-STEAM_DEFINE_INTERFACE_ACCESSOR( ISteamClient *, SteamClient, SteamInternal_CreateInterface( STEAMCLIENT_INTERFACE_VERSION ), "global", STEAMCLIENT_INTERFACE_VERSION );
+//inline ISteamClient *SteamClient();
+//STEAM_DEFINE_INTERFACE_ACCESSOR( ISteamClient *, SteamClient, SteamInternal_CreateInterface( STEAMCLIENT_INTERFACE_VERSION ), "global", STEAMCLIENT_INTERFACE_VERSION );
 
 // The internal ISteamClient used for the gameserver interface.
 // (This is actually the same thing.  You really shouldn't need to access any of this stuff directly.)
-inline ISteamClient *SteamGameServerClient() { return SteamClient(); }
+//inline ISteamClient *SteamGameServerClient() { return SteamClient(); }
 
 #endif
 
