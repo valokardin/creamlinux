@@ -46,7 +46,7 @@ jobs:
       with:
         name: linux-artifacts
         path: |
-          ${{github.workspace}}/build/lib
+          ${{github.workspace}}/output
     - name: Create Release
       id: create_release
       if: ${{ github.event_name == 'workflow_dispatch'}}
@@ -63,7 +63,7 @@ jobs:
       uses: papeloto/action-zip@v1
       if: ${{ github.event_name == 'workflow_dispatch'}}
       with:
-        files: build/lib
+        files: output
         dest: creamlinux.zip
     - name: Upload Release Assets
       if: ${{ github.event_name == 'workflow_dispatch'}}
