@@ -38,6 +38,12 @@ make
 If you want to load `cream_api.ini` from a specific path, specify the path with `CREAM_CONFIG_PATH` in the launch options.
 
 If the game you want to test isn't supported, use `CREAM_GAME_NAME` to specify the game executable's name.
+## Todo
+ - Proxy mode
+ - dlsym hooking (Unity?)
+ - Support for some older versions of the steam API
+ - Proton support
+
 
 ## Credits
 [pulzed](https://github.com/pulzed) for [mINI](https://github.com/pulzed/mINI)(ini.h)
