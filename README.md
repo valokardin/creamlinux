@@ -6,7 +6,7 @@ This should work for any linux native steam title that isn't a unity game and do
 
 ## Tested games
  - Hearts Of Iron IV
- - Stellaris 
+ - Stellaris (doesn't work anymore :< )
  - PAYDAY 2
  
 ## Usage 
