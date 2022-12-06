@@ -5,6 +5,7 @@
 #include "ext/steam/isteamclient.h"
 #include "ext/steam/isteamuser.h"
 #include "spdlog/spdlog.h"
+#include "spdlog/sinks/basic_file_sink.h"
 #include "ext/ini.h"
 #include <string>
 #include <cassert>
@@ -23,7 +24,17 @@ using namespace std;
 
 vector<tuple<int, string>> dlcs;
 
+void* (*real_dlsym)(void *handle, const char *name);
+
 mINI::INIStructure ini;
+
+//TODO: move this somewhere else (immediately on lib load?)
+//TODO: hook dlvsym as well
+void ensure_realdlsym() {
+    if (real_dlsym == NULL) {
+        *(void **)(&real_dlsym) = dlvsym(RTLD_NEXT, "dlsym", "GLIBC_2.2.5");
+    }
+}
 
 class Hookey_SteamApps_Class : public ISteamApps {
 public:
@@ -287,7 +298,7 @@ public:
         return Hookey_SteamUser(real_steamClient->GetISteamUser(hSteamUser, hSteamPipe, pchVersion));
         //return real_steamClient->GetISteamUser(hSteamUser, hSteamPipe, pchVersion);
     }
-	ISteamGameServer *GetISteamGameServer( HSteamUser hSteamUser, HSteamPipe hSteamPipe, const char *pchVersion ) {
+    ISteamGameServer *GetISteamGameServer( HSteamUser hSteamUser, HSteamPipe hSteamPipe, const char *pchVersion ) {
         return real_steamClient->GetISteamGameServer(hSteamUser, hSteamPipe, pchVersion);
     }
 	void SetLocalIPBinding( const SteamIPAddress_t &unIP, uint16 usPort ) {
@@ -415,24 +426,31 @@ ISteamClient* Hookey_SteamClient(ISteamClient* real_steamClient) {
         return Hookey_SteamClient(real_steamClient);
     }
 }
+
 #define STEAMAPPS_INTERFACE_VERSION_N008 "STEAMAPPS_INTERFACE_VERSION008"
 
 #define STEAMUSER_INTERFACE_VERSION_020 "SteamUser020"
 #define STEAMUSER_INTERFACE_VERSION_021 "SteamUser021"
 
 #define STEAMCLIENT_INTERFACE_VERSION_017 "SteamClient017"
+#define STEAMCLIENT_INTERFACE_VERSION_019 "SteamClient019"
+
 extern "C" void* CreateInterface(const char *pName, int *pReturnCode) {
-     void* S_CALLTYPE (*real)(const char *pName, int *pReturnCode);
-    *(void**)(&real) = dlsym(RTLD_NEXT, "CreateInterface");
+    ensure_realdlsym();
+    void *S_CALLTYPE (*real)(const char *pName, int *pReturnCode);
+    *(void**)(&real) = real_dlsym(RTLD_NEXT, "CreateInterface");
     spdlog::info("CreateInterface called pszVersion: {}", pName);
     return real(pName, pReturnCode);
 }
+
 extern "C" void Steam_LogOn(HSteamUser hUser, HSteamPipe hSteamPipe, uint64 ulSteamID) {
-     void* S_CALLTYPE (*real)(HSteamUser hUser, HSteamPipe hSteamPipe, uint64 ulSteamID);
-    *(void**)(&real) = dlsym(RTLD_NEXT, "SteamAPI_LogOn");
+    ensure_realdlsym();
+    void* S_CALLTYPE (*real)(HSteamUser hUser, HSteamPipe hSteamPipe, uint64 ulSteamID);
+    *(void**)(&real) = real_dlsym(RTLD_NEXT, "SteamAPI_LogOn");
     spdlog::info("SteamAPI_LogOn called {0} {1} {2}",hUser, hSteamPipe, ulSteamID );
     real(hUser, hSteamPipe, ulSteamID);
 }
+
 extern "C" bool SteamAPI_ISteamApps_BGetDLCDataByIndex(int iDLC, AppId_t* pAppID, bool* pbAvailable, char* pchName, int cchNameBufferSize) {
         spdlog::info("SteamAPI_ISteamApps_BGetDLCDataByIndex called");
         if ((size_t)iDLC >= dlcs.size()) {
@@ -449,9 +467,11 @@ extern "C" bool SteamAPI_ISteamApps_BGetDLCDataByIndex(int iDLC, AppId_t* pAppID
 
         return true;
 }
+
 extern "C" void* S_CALLTYPE SteamInternal_FindOrCreateUserInterface(HSteamUser hSteamUser, const char *pszVersion) {
+    ensure_realdlsym();
     void* S_CALLTYPE (*real)(HSteamUser hSteamUser, const char *pszVersion);
-    *(void**)(&real) = dlsym(RTLD_NEXT, "SteamInternal_FindOrCreateUserInterface");
+    *(void**)(&real) = real_dlsym(RTLD_NEXT, "SteamInternal_FindOrCreateUserInterface");
     spdlog::info("SteamInternal_FindOrCreateUserInterface called pszVersion: {}", pszVersion);
     // Steamapps Interface call is hooked here
     if (strstr(pszVersion, STEAMAPPS_INTERFACE_VERSION_N008) == pszVersion) {
@@ -474,9 +494,11 @@ extern "C" void* S_CALLTYPE SteamInternal_FindOrCreateUserInterface(HSteamUser h
     auto val = real(hSteamUser, pszVersion);
     return val;
 }
+
 extern "C" void* S_CALLTYPE SteamInternal_CreateInterface(const char *pszVersion) {
+    ensure_realdlsym();
      void* S_CALLTYPE (*real)(const char *pszVersion);
-    *(void**)(&real) = dlsym(RTLD_NEXT, "SteamInternal_CreateInterface");
+    *(void**)(&real) = real_dlsym(RTLD_NEXT, "SteamInternal_CreateInterface");
     spdlog::info("SteamInternal_CreateInterface called pszVersion: {}", pszVersion);
 
     // Steamapps Interface call is hooked here
@@ -499,7 +521,14 @@ extern "C" void* S_CALLTYPE SteamInternal_CreateInterface(const char *pszVersion
         return Hookey_SteamUser(val);
     }
 
+
     if (strstr(pszVersion, STEAMCLIENT_INTERFACE_VERSION_017) == pszVersion) {
+        ISteamClient* val = (ISteamClient*)real(pszVersion);
+        spdlog::info("SteamInternal_CreateInterface ISteamClient(legacy) hook");
+        return Hookey_SteamClient(val);
+    }
+
+    if (strstr(pszVersion, STEAMCLIENT_INTERFACE_VERSION_019) == pszVersion) {
         ISteamClient* val = (ISteamClient*)real(pszVersion);
         spdlog::info("SteamInternal_CreateInterface ISteamClient(legacy) hook");
         return Hookey_SteamClient(val);
@@ -508,52 +537,47 @@ extern "C" void* S_CALLTYPE SteamInternal_CreateInterface(const char *pszVersion
     auto val = real(pszVersion);
     return val;
 }
-extern "C" void * steamclient_CreateInterface(const char *name, int *return_code) {
-    void* S_CALLTYPE (*real)(const char *name, int *return_code);
-    *(void**)(&real) = dlsym(RTLD_NEXT, "steamclient_CreateInterface");
-    spdlog::info("steamclient_CreateInterface called pszVersion: {}", name);
-    return real(name, return_code);
-}
 
-
-extern "C" EUserHasLicenseForAppResult SteamAPI_ISteamUser_UserHasLicenseForApp(CSteamID steamID, AppId_t appId) {
-    // LOG(TRACE) << "SteamAPI_ISteamUser_UserHasLicenseForApp called!!" << endl;
-    spdlog::info("ISteamUser_UserHasLicenseForApp called");
-    return (EUserHasLicenseForAppResult)0;
-}
 // for older games
 extern "C" ISteamApps *S_CALLTYPE SteamApps() {
+    ensure_realdlsym();
     spdlog::info("SteamApps() called");
 
     //get isteamapps
     void* S_CALLTYPE (*real)();
-    *(void**)(&real) = dlsym(RTLD_NEXT, "SteamApps");
+    *(void**)(&real) = real_dlsym(RTLD_NEXT, "SteamApps");
     ISteamApps* val = (ISteamApps*)real();
-
+    //return val;
     return Hookey_SteamApps(val);
 }
 // for older games
 extern "C" ISteamUser *S_CALLTYPE SteamUser() {
+    ensure_realdlsym();
     spdlog::info("SteamUser() called");
 
     //get isteamuser 
     void* S_CALLTYPE (*real)();
-    *(void**)(&real) = dlsym(RTLD_NEXT, "SteamUser");
+    *(void**)(&real) = real_dlsym(RTLD_NEXT, "SteamUser");
     ISteamUser* val = (ISteamUser*)real();
-    
+    //return val;
     return Hookey_SteamUser(val);
 }
-// for older games
-extern "C" ISteamClient *S_CALLTYPE SteamClient() {
-    spdlog::info("SteamClient() called");
 
-    //get isteamuser
-    void* S_CALLTYPE (*real)();
-    *(void**)(&real) = dlsym(RTLD_NEXT, "SteamClient");
-    ISteamClient* val = (ISteamClient*)real();
+// disabled for now due to PAYDAY 2 launch issues (Paradox launcher will show 'Not owned' without this)
+//TODO: readd when codebase is desphagettifed and can support multiple SDK versions
+//TODO: test whether this breaks/fixes other games
+// this is a hooking method
+// extern "C" ISteamClient *S_CALLTYPE SteamClient() {
+//     ensure_realdlsym();
+//     spdlog::info("SteamClient() called");
 
-    return Hookey_SteamClient(val);
-}
+//     //get isteamuser
+//     void* S_CALLTYPE (*real)();
+//     *(void**)(&real) = real_dlsym(RTLD_NEXT, "SteamClient");
+//     ISteamClient* val = (ISteamClient*)real();
+//     return Hookey_SteamClient(val);
+// }
+
 // anti-debugger shenanigans
 long ptrace(int request, int pid, void *addr, void *data) {
     return 0;
@@ -567,14 +591,20 @@ int printdliter(struct dl_phdr_info *info, size_t size, void *data) {
   return 0;
 }
 
-extern "C" bool SteamAPI_Init() {
-
+extern "C" bool SteamAPI_Init()
+{
+    ensure_realdlsym();
     std::string creaminipath = "cream_api.ini";
+    // for developers: enable these 2 lines if you want to log output to a file
+    // auto logger = std::make_shared<spdlog::sinks::basic_file_sink_mt>("creamlinux_log.txt", true);
+    // spdlog::default_logger().get()->sinks().push_back(logger);
+
     auto env = std::getenv("CREAM_CONFIG_PATH");
     //f env exists, use it
     if (env != NULL) {
         creaminipath = env;
     }
+    
     spdlog::info("Reading config from {}", creaminipath);
     mINI::INIFile file(creaminipath);
 
@@ -591,7 +621,7 @@ extern "C" bool SteamAPI_Init() {
     // the spaghetti below this comment is calling the original Init function
     // can probably be simplified but i'm no c++ expert 
     bool (*real)();
-    *(void**)(&real) = dlsym(RTLD_NEXT, "SteamAPI_Init");
+    *(void**)(&real) = real_dlsym(RTLD_NEXT, "SteamAPI_Init");
     char* errstr = dlerror();
     if (errstr != NULL) {
         spdlog::error("SteamAPI_Init failed; A dynamic linking error occurred: {0}", errstr);
@@ -599,18 +629,68 @@ extern "C" bool SteamAPI_Init() {
         dl_iterate_phdr(printdliter, NULL);
         return false;
     }
+    spdlog::info("Calling real SteamAPI_Init");
     auto retval = real();
-    spdlog::info("SteamAPI_Init returned");
+    spdlog::info("SteamAPI_Init returned {0}", retval);
+    
     return retval;
 }
-extern "C" ISteamApps * cppISteamClient_SteamClient020_GetISteamApps(void *linux_side, HSteamUser hSteamUser, HSteamPipe hSteamPipe, const char * pchVersion) {
-    spdlog::info("cppISteamClient_SteamClient020_GetISteamApps called");
-    void* S_CALLTYPE (*real)();
-    *(void**)(&real) = dlsym(RTLD_NEXT, "SteamApps");
-    ISteamApps* val = (ISteamApps*)real();
-    return Hookey_SteamApps(val);
+
+struct SContextInitData { 
+    void (*pFn)(void* ctx); 
+    uintptr_t counter; 
+    void *ptr;
+};
+// uncomment the below line and filelog->info lines to enable dlsym logging for quirky use cases (Proton, mono apps)
+// auto filelog = spdlog::basic_logger_mt("dlsym_log", "creamlinux_dlsym_log.txt", true);
+
+//TODO: add a flag to allow users to disable the dlsym hooking method
+extern "C" void *dlsym(void *handle, const char *name)
+{   
+    // filelog->info("modified dlsym called with {0}", name);
+
+    ensure_realdlsym();
+
+    /* my target binary is even asking for dlsym() via dlsym()... */
+    if (!strcmp(name,"dlsym")) 
+        return (void*)dlsym;
+
+    if (!strcmp(name, "SteamAPI_Init") && handle != RTLD_NEXT) {
+        spdlog::info("returning custom impl for {0}", name);
+        spdlog::info("custom: {0}, real: {1}", (void *)SteamAPI_Init, real_dlsym(RTLD_NEXT, "SteamAPI_Init"));
+        // filelog->info("returning custom impl for {0}", name);
+        // filelog->info("custom: {0}, real: {1}", (void *)SteamAPI_Init, real_dlsym(RTLD_NEXT, "SteamAPI_Init"));
+        return (void *)SteamAPI_Init;
+    }
+    if (!strcmp(name, "SteamInternal_CreateInterface") && handle != RTLD_NEXT) {
+        spdlog::info("returning custom impl for {0}", name);
+        spdlog::info("custom: {0}, real: {1}", (void *)SteamInternal_CreateInterface, real_dlsym(RTLD_NEXT, "SteamInternal_CreateInterface"));
+        //filelog->info("returning custom impl for {0}", name);
+        //filelog->info("custom: {0}, real: {1}", (void *)SteamInternal_CreateInterface, real_dlsym(RTLD_NEXT, "SteamInternal_CreateInterface"));
+        return (void *)SteamInternal_CreateInterface;
+    }
+    // enabling this makes some games (golf with your friends) start calling non-existing functions
+    //TODO: add a setting to let users use this as a hooking method
+    // if (!strcmp(name, "CreateInterface") && handle != RTLD_NEXT) {
+    //     filelog->info("returning custom impl for {0}", name);
+    //     filelog->info("custom: {0}, real: {1}", (void *)CreateInterface, real_dlsym(RTLD_NEXT, "CreateInterface"));
+    //     return (void *)CreateInterface;
+    // }
+
+    return real_dlsym(handle,name);
 }
 
-int main() {
-    return 0;
-}
+//TODO: support this as a hooking method
+// extern "C" void* SteamInternal_ContextInit(void *pContextInitData) {
+//     spdlog::info("SteamInternal_ContextInit called");
+//     void* S_CALLTYPE (*real)(void *pContextInitData);
+//     *(void**)(&real) = real_dlsym(RTLD_NEXT, "SteamInternal_ContextInit");
+//     return real(pContextInitData);
+//     // struct SContextInitData *contextInitData = (struct SContextInitData *)pContextInitData;
+//     // if (contextInitData->counter != global_counter) {
+//     //     contextInitData->pFn(&contextInitData->ctx);
+//     //     contextInitData->counter = global_counter;
+//     // }
+
+//     // return &contextInitData->ctx;
+// }
