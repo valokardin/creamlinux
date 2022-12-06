@@ -2,7 +2,7 @@
 CreamApi clone for Linux.
 
 ## Support
-This should work for any linux native steam title that isn't a unity game and doesn't block LD_PRELOAD.
+This should work for any linux native steam title that doesn't block LD_PRELOAD.
 
 ## Tested games
  - Hearts Of Iron IV
@@ -22,27 +22,25 @@ This should work for any linux native steam title that isn't a unity game and do
 ```
 git clone https://github.com/20PercentRendered/creamlinux --recursive
 ```
-2. build the project like any standard CMake project:
+2. build the project with build.sh
 ```
-mkdir build
-cd build
-cmake ..
-make
+sh ./build.sh
 ```
 
-3. Copy `build/lib` folder contents to the game folder.
+3. Copy `output` folder contents to the game folder.
 4. Then set the game's steam launch params to `sh ./cream.sh %command%`.
 5. If you have your own cream_api.ini, copy the DLC lines to Creamlinux's cream_api.ini in the game directory. 
 ## Advanced 
 
 If you want to load `cream_api.ini` from a specific path, specify the path with `CREAM_CONFIG_PATH` in the launch options.
-
-If the game you want to test isn't supported, use `CREAM_GAME_NAME` to specify the game executable's name.
 ## Todo
  - Proxy mode
- - dlsym hooking (Unity?)
  - Support for some older versions of the steam API
+ - Support multiple SDK versions
  - Proton support
+ - SteamClient() call support (Paradox launcher)
+ - Desphaggetify code 
+ - Put all external code into ext
 
 
 ## Credits
