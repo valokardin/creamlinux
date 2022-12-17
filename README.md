@@ -17,6 +17,12 @@ This should work for any linux native steam title that doesn't block LD_PRELOAD.
 4. If you have your own cream_api.ini, copy the DLC lines to Creamlinux's cream_api.ini in the game directory. 
 5. Launch your game and have fun! 
 
+## Build Dependencies 
+### On Ubuntu
+`gcc-multilib` `g++-multilib` `cmake` `git`
+### On Arch:
+`base-devel` `multilib-devel` `cmake` `git`
+
 ## Building from source
 1. Clone the project recursively:
 ```
