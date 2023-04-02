@@ -1,6 +1,10 @@
 # Creamlinux
 CreamApi clone for Linux.
 
+# Archived, I don't have time to support this anymore
+If you want, create a fork and improve it yourself. 
+Although it might be better to just rewrite the whole thing.
+
 ## Support
 This should work for any linux native steam title that doesn't block LD_PRELOAD.
 
