@@ -10,7 +10,7 @@ This *should* work for any linux native steam title that doesn't block LD_PRELOA
  - Stellaris
  - PAYDAY 2
  
-# Usage 
+## Usage 
 0. You will need the actual, **up-to-date** DLC files in the game. Creamlinux does **not** auto-download anything
 1. Download the [latest](https://github.com/anticitizn/creamlinux/releases/latest/download/creamlinux.zip) release of Creamlinux
 2. Unzip it and copy the files to the game's directory
@@ -19,7 +19,7 @@ This *should* work for any linux native steam title that doesn't block LD_PRELOA
 
 The list of "supported" DLCs is stored in `cream_api.ini`. If you want to test creamlinux on a new game or a new DLC has just come out, you can add more entries here manually.
 
-# Building from source
+## Building from source
 0. Ensure you have all build dependencies installed:
 - On Ubuntu: `build-essential` `gcc-multilib` `g++-multilib` `cmake` `git`
 - On Arch: `base-devel` `multilib-devel` `cmake` `git`
