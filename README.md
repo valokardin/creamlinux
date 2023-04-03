@@ -1,20 +1,19 @@
 # Creamlinux
 CreamApi clone for Linux.
 
-# Archived, I don't have time to support this anymore
-If you want, create a fork and improve it yourself. 
-Although it might be better to just rewrite the whole thing.
+# Fork
+Since 20PercentRendered has archived the repo, I have decided to fork and support it as far as I can.
 
 ## Support
 This should work for any linux native steam title that doesn't block LD_PRELOAD.
 
 ## Tested games
  - Hearts Of Iron IV
- - Stellaris (doesn't work anymore :< )
+ - Stellaris
  - PAYDAY 2
  
 ## Usage 
-0. You will need the actual files for DLC in the game. Creamlinux does not and _will not_ auto-download anything. 
+0. You will need the actual, **up-to-date** DLC files in the game. Creamlinux does not and _will not_ auto-download anything. 
 1. Download the [latest](https://github.com/20PercentRendered/creamlinux/releases/latest/download/creamlinux.zip) release of Creamlinux.
 2. Unzip it and copy the files to the game's directory
 3. Set the game's steam launch params to `sh ./cream.sh %command%`.
@@ -61,3 +60,5 @@ If you want to load `cream_api.ini` from a specific path, specify the path with 
 [gabime](https://github.com/gabime) for [spdlog](https://github.com/gabime/spdlog)
 
 [goddeysfreya](https://github.com/goddessfreya) for [hookey](https://github.com/goddessfreya/hookey)
+
+[20PercentRendered](https://github.com/20PercentRendered) for [creamlinux](https://github.com/20PercentRendered/creamlinux)
