@@ -1,7 +1,5 @@
 # Creamlinux
 CreamApi clone for Linux.
-
-# Fork
 Since 20PercentRendered has archived the repo, I have decided to fork and support it as far as I can.
 
 ## Support
