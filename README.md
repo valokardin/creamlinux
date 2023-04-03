@@ -12,7 +12,7 @@ This should work for any linux native steam title that doesn't block LD_PRELOAD.
  
 ## Usage 
 0. You will need the actual, **up-to-date** DLC files in the game. Creamlinux does not and _will not_ auto-download anything. 
-1. Download the [latest](https://github.com/20PercentRendered/creamlinux/releases/latest/download/creamlinux.zip) release of Creamlinux.
+1. Download the [latest](https://github.com/anticitizn/creamlinux/releases/latest/download/creamlinux.zip) release of Creamlinux.
 2. Unzip it and copy the files to the game's directory
 3. Set the game's steam launch params to `sh ./cream.sh %command%`.
 4. If you have your own cream_api.ini, copy the DLC lines to Creamlinux's cream_api.ini in the game directory. 
