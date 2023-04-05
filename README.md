@@ -38,6 +38,8 @@ sh ./build.sh
 3. Copy `output` folder contents to the game folder
 4. Set the game's steam launch params to `sh ./cream.sh %command%`
 
+Alternatively, if you have Docker installed, you can just run `docker compose up`
+
 # Troubleshooting
 ## Red triangles next to DLCs
 This is normal. The DLCs should still work.
