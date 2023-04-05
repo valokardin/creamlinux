@@ -19,6 +19,8 @@ This *should* work for any linux native steam title that doesn't block LD_PRELOA
 
 The list of "supported" DLCs is stored in `cream_api.ini`. If you want to test creamlinux on a new game or a new DLC has just come out, you can add more entries here manually.
 
+If that doesn't work, please check the Troubleshooting section below.
+
 ## Building from source
 0. Ensure you have all build dependencies installed:
 - On Ubuntu: `build-essential` `gcc-multilib` `g++-multilib` `cmake` `git`
@@ -36,18 +38,30 @@ sh ./build.sh
 3. Copy `output` folder contents to the game folder
 4. Set the game's steam launch params to `sh ./cream.sh %command%`
 
-## Advanced 
+# Troubleshooting
+## Red triangles next to DLCs
+This is normal. The DLCs should still work.
+
+![Red triangles next to DLCs are normal](https://cdn.discordapp.com/attachments/663174968791662594/1093109044295766106/image.png)
+
+## DLCs don't work
+Have you made sure to download the latest version of the DLC files? Sometimes unrelated patches or updates to the game will modify some DLC files, and creamlinux is currently somewhat sensitive to outdated files.
+
+## Game not starting after enabling creamlinux
+Have you made sure that you actually put the creamlinux files in the game's directory? (I sometimes forget to move them out of the `creamlinux` folder into the game directory proper)
+
+## Nothing helped!
+Please collect a log using the instructions below, then post an issue describing your situation [here](https://github.com/anticitizn/creamlinux/issues/new).
+
+## Gathering logs
+Install `konsole` and set your game launch options to this:
+```
+konsole --hold -e sh ./cream.sh %command%
+```
+Then launch the game (skip any launchers like the Paradox launcher if possible, they interfere with the logging). Wait for the game to load if applicable, close it, then copy and paste the contents of the terminal.
+
+# Advanced 
 If you want to load `cream_api.ini` from a specific path, specify the path with `CREAM_CONFIG_PATH` in the launch options.
-
-## Todo
- - Proxy mode
- - Support for some older versions of the steam API
- - Support multiple SDK versions
- - Proton support
- - SteamClient() call support (Paradox launcher)
- - Desphaggetify code 
- - Put all external code into ext
-
 
 ## Credits
 [pulzed](https://github.com/pulzed) for [mINI](https://github.com/pulzed/mINI)(ini.h)
