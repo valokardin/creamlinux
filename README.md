@@ -8,6 +8,7 @@ This *should* work for any linux native steam title that doesn't block LD_PRELOA
 
  - Hearts Of Iron IV
  - Stellaris
+ - Crusader Kings II
  - PAYDAY 2
  
 ## Usage 
