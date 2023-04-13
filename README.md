@@ -6,8 +6,9 @@ Since 20PercentRendered has archived the repo, I have decided to fork and suppor
 ## Support
 This *should* work for any linux native steam title that doesn't block LD_PRELOAD. The following games have been tested and confirmed to work:
 
- - Hearts Of Iron IV
  - Stellaris
+ - Hearts Of Iron IV
+ - Europa Universalis IV
  - Crusader Kings II
  - PAYDAY 2
  
