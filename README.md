@@ -52,7 +52,9 @@ This is normal. The DLCs should still work.
 Have you made sure to download the latest version of the DLC files? Sometimes unrelated patches or updates to the game will modify some DLC files, and creamlinux is currently somewhat sensitive to outdated files.
 
 ## Game not starting after enabling creamlinux
-Try setting the executable flag of the `cream.sh` script:
+Are you sure that the creamlinux files are at the game's root directory and not in a subfolder?
+
+Try setting the executable flag of the `cream.sh` script (it should be set already, but just in case):
 ```
 chmod +x cream.sh
 ```
