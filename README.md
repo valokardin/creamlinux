@@ -10,6 +10,7 @@ This *should* work for any linux native steam title that doesn't block LD_PRELOA
  - Hearts Of Iron IV
  - Europa Universalis IV
  - Crusader Kings II
+ - Crusader Kings III
  - PAYDAY 2
  
 ## Usage 
