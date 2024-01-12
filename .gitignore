@@ -3,3 +3,5 @@ build/
 .vscode
 lib/
 output
+.idea
+cmake-build-debug/

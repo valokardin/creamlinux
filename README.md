@@ -64,10 +64,15 @@ chmod +x cream.sh
 Please collect a log using the instructions below, then post an issue describing your situation [here](https://github.com/anticitizn/creamlinux/issues/new).
 
 ## Gathering logs
-Install `konsole` and set your game launch options to this:
+If using a KDE environment, set your game launch options to this:
 ```
 konsole --hold -e sh ./cream.sh %command%
 ```
+Or if you are using Gnome environment, you can set your launch options to this:
+```
+gnome-terminal -- sh -c "./cream.sh %command%; exec bash"
+```
+If using neither, install `konsole` and follow the KDE step.
 Then launch the game (skip any launchers like the Paradox launcher if possible, they interfere with the logging). Wait for the game to load if applicable, close it, then copy and paste the contents of the terminal.
 
 # Advanced 
