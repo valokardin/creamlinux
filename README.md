@@ -61,7 +61,7 @@ chmod +x cream.sh
 ```
 
 ## Nothing helped!
-Please collect a log using the instructions below as well as an overview of the game's directory (`ls` is enough), then post an issue describing your situation [here](https://github.com/anticitizn/creamlinux/issues/new).
+Please collect a log using the instructions below as well as an overview of the game's directory using `ls -lh; ls -lh */`, then post an issue describing your situation [here](https://github.com/anticitizn/creamlinux/issues/new).
 
 ## Gathering logs
 If using a KDE environment, set your game launch options to this:
