@@ -12,8 +12,14 @@ This *should* work for any linux native steam title that doesn't block LD_PRELOA
  - Crusader Kings II
  - Crusader Kings III
  - PAYDAY 2
- 
-## Usage 
+
+## Installation
+The easiest way of installing is using **Novattz**'s Python script: https://github.com/Novattz/creamlinux-installer
+It automatically downloads and sets up creamlinux for Steam games that you choose, as well as fetching all DLC IDs for it. Keep in mind that you will still need the actual, **up-to-date** DLC files in the game. Creamlinux does **not** auto-download anything. You will have to run it again if new DLCs are released for a game.
+
+If the script does not work for you, you can install `creamlinux` manually. Beware that you will have to manually update `cream_api.ini` to contain the DLC IDs for the games that you choose.
+
+## Manual Installation
 0. You will need the actual, **up-to-date** DLC files in the game. Creamlinux does **not** auto-download anything
 1. Download the [latest](https://github.com/anticitizn/creamlinux/releases/latest/download/creamlinux.zip) release of Creamlinux
 2. Unzip it and copy the files to the game's directory
@@ -79,6 +85,10 @@ Then launch the game (skip any launchers like the Paradox launcher if possible, 
 If you want to load `cream_api.ini` from a specific path, specify the path with `CREAM_CONFIG_PATH` in the launch options.
 
 ## Credits
+[Novattz](https://github.com/Novattz) for [creamlinux-installer](https://github.com/Novattz/creamlinux-installer)
+
+[Rosentti](https://github.com/Rosentti) for originally creating and maintaining this project
+
 [pulzed](https://github.com/pulzed) for [mINI](https://github.com/pulzed/mINI)(ini.h)
 
 [Valve](https://www.valvesoftware.com/) for [steamworks](https://partner.steamgames.com/)
@@ -86,5 +96,3 @@ If you want to load `cream_api.ini` from a specific path, specify the path with 
 [gabime](https://github.com/gabime) for [spdlog](https://github.com/gabime/spdlog)
 
 [goddeysfreya](https://github.com/goddessfreya) for [hookey](https://github.com/goddessfreya/hookey)
-
-[20PercentRendered](https://github.com/20PercentRendered) for [creamlinux](https://github.com/20PercentRendered/creamlinux)
