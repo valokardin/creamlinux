@@ -85,6 +85,8 @@ Then launch the game (skip any launchers like the Paradox launcher if possible, 
 If you want to load `cream_api.ini` from a specific path, specify the path with `CREAM_CONFIG_PATH` in the launch options.
 
 ## Credits
+The many contributors who submitted bugfixes, tested games and updated the list of DLC IDs :)
+
 [Novattz](https://github.com/Novattz) for [creamlinux-installer](https://github.com/Novattz/creamlinux-installer)
 
 [Rosentti](https://github.com/Rosentti) for originally creating and maintaining this project
