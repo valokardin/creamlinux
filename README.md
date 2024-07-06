@@ -4,7 +4,9 @@ A CreamAPI clone for Linux.
 Since 20PercentRendered has archived the repo, I have decided to fork and support it as far as I can.
 
 ## Support
-This *should* work for any linux native steam title that doesn't block LD_PRELOAD. The following games have been tested and confirmed to work:
+This *should* work for any native Linux Steam title that doesn't block LD_PRELOAD. It does not work with Proton or Wine - use SmokeAPI or other alternatives made specifically for Windows instead.
+
+The following games have been tested and confirmed to work:
 
  - Stellaris
  - Hearts Of Iron IV
@@ -65,6 +67,9 @@ Try setting the executable flag of the `cream.sh` script (it should be set alrea
 ```
 chmod +x cream.sh
 ```
+
+## It doesn't work with Proton or Wine
+Creamlinux is specifically made for native Linux games. If you are using a compatibility layer, use alternatives made specifically for Windows (e.g. SmokeAPI, regular CreamAPI or whatever).
 
 ## Nothing helped!
 Please collect a log using the instructions below as well as an overview of the game's directory using `ls -lh; ls -lh */`, then post an issue describing your situation [here](https://github.com/anticitizn/creamlinux/issues/new).
