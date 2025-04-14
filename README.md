@@ -12,6 +12,7 @@ The following games have been tested and definitely confirmed to work:
  - Europa Universalis IV
  - Crusader Kings II
  - Crusader Kings III
+ - Victoria 3
  - PAYDAY 2
 
 ## Unsupported Games
