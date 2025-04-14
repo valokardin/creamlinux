@@ -75,7 +75,7 @@ chmod +x cream.sh
 
 ## It doesn't work with Proton or Wine
 Creamlinux is specifically made for native Linux games. If you are using a compatibility layer, use alternatives made specifically for Windows (e.g. SmokeAPI, regular CreamAPI or whatever).
-![AutoCreamAPI](https://github.com/MoebiusZero/AutoCreamAPI) has worked well for some people, keep in mind that you need to install .NetCore3 on your Wine/Proton instance first.
+[AutoCreamAPI](https://github.com/MoebiusZero/AutoCreamAPI) has worked well for some people, keep in mind that you need to install .NetCore3 on your Wine/Proton instance first.
 
 ## Nothing helped!
 Please collect a log using the instructions below as well as an overview of the game's directory using `ls -lh; ls -lh */`, then post an issue describing your situation [here](https://github.com/anticitizn/creamlinux/issues/new).
@@ -97,9 +97,9 @@ If you want to load `cream_api.ini` from a specific path, specify the path with 
 
 # Alternatives
 If creamlinux doesn't work for your game, there are a couple of known alternatives for Linux. I provide no guarantees for their legitimacy and functionality, but some people seem to be happy with them.
-- ![StellarKey](https://0xacab.org/stellarkey/stellarkey)
-- ![CreamAPI (Windows, MacOS, Linux)[https://cs.rin.ru/forum/viewtopic.php?f=29&t=70576]
-- ![AutoCreamAPI for Proton](https://github.com/MoebiusZero/AutoCreamAPI) (.NetCore3 required)
+- [StellarKey](https://0xacab.org/stellarkey/stellarkey)
+- [CreamAPI (Windows, MacOS, Linux)](https://cs.rin.ru/forum/viewtopic.php?f=29&t=70576)
+- [AutoCreamAPI for Proton](https://github.com/MoebiusZero/AutoCreamAPI) (.NetCore3 required)
 
 # Credits
 The many contributors who submitted bugfixes, tested games and updated the list of DLC IDs :)
